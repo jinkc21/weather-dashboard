@@ -1,11 +1,33 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <link rel="stylesheet" src="assets/css/style.css">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Weather Dashboard</title>
 </head>
 <body>
-    
+    <header>
+    <div class="jumbotron">
+        <h1 class="display-4">Weather Dashboard</h1>
+        <p class="lead">Enter your city to find the 5 day forecast coming up.</p>
+        <hr class="my-4">
+        <p></p>
+        <p class="lead">
+          <input id="city-input" type="text">
+          <button class="btn btn-primary btn-lg" type="submit" id="get-weather-button">Get Weather</button>
+        </p>
+      </div>
+    </header>
+    <section id="main">
+        <div id="weather-output">
+          <h1 class="name"></h1>
+          <p class="decription"></p>
+          <p class="temp"></p>
+          
+        </div>
+    </section>
+
+<script src="assets/js/script.js"></script>
 </body>
 </html>
