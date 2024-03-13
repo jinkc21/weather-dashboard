@@ -9,11 +9,13 @@ const dayTwoEl = document.getElementById('day-2')
 const dayThreeEl = document.getElementById('day-3')
 const dayFourEl = document.getElementById('day-4')
 const dayFiveEl = document.getElementById('day-5')
+const recentSearch = JSON.parse(localStorage.getItem('city'))
+const latLon = JSON.parse(localStorage.getItem('coord'))
 
 const today = dayjs()
 
 function getWeather(event) {
-  event.preventDefault()
+  // event.preventDefault()
   const weatherUrl = `https://api.openweathermap.org/data/2.5/weather?q=${cityInput.value}&appid=${APIKey}`
 
   fetch(weatherUrl)
@@ -21,8 +23,11 @@ function getWeather(event) {
       return response.json();
     })
     .then(function (data) {
-      const lat = data.coord.lat
-      const lon = data.coord.lon
+      // const lat = data.coord.lat
+      // const lon = data.coord.lon
+
+      localStorage.setItem("city", JSON.stringify(data.name))
+      localStorage.setItem("coord", JSON.stringify(data.coord))
 
       cityNameEl.innerHTML = data.name
       $('#day-1-date').text(today.format('MMM D, YYYY'));
@@ -30,13 +35,16 @@ function getWeather(event) {
       dayOneEl.children[2].innerHTML = "Temperature: " + data.main.temp
       dayOneEl.children[3].innerHTML = "Humidity: " + data.main.humidity
       dayOneEl.children[4].innerHTML = "Wind Speed:" + data.wind.speed
+    
+    })
+}
 
-
-      getForecastBtn.addEventListener('click', getForecast);
+getWeatherBtn.addEventListener('click', getWeather);
+getForecastBtn.addEventListener('click', getForecast);
 
       function getForecast(event) {
-        event.preventDefault()
-        const forecastUrl = `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${APIKey}`
+        // event.preventDefault()
+        const forecastUrl = `https://api.openweathermap.org/data/2.5/forecast?lat=${latLon.lat}&lon=${latLon.lon}&appid=${APIKey}`
         fetch(forecastUrl)
              .then(function (response) {
             return response.json();
@@ -75,9 +83,3 @@ function getWeather(event) {
             dayFiveEl.children[4].innerHTML = "Wind Speed:" + data.list[32].wind.speed
           })
       }
-    })
-}
-
-
-
-getWeatherBtn.addEventListener('click', getWeather);
