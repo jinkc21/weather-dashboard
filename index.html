@@ -18,6 +18,7 @@
     <div class="jumbotron">
       <h1 class="display-4">Weather Dashboard</h1>
       <p class="lead">Enter your city to find the 5 day forecast coming up.</p>
+      Today's Date: <div id="today"></div>
       <hr class="my-4">
       <p></p>
       <p class="lead">
@@ -25,8 +26,8 @@
         <button class="btn btn-primary btn-lg" type="submit" id="get-weather-button" for="city-input">Get Weather</button>
         <button class="btn btn-primary btn-lg" type="submit" id="get-forecast-button" for="city-input">Get Forecast</button>
       <div id="search-history">
-        <ul id="cities-searched"></ul>
-        
+        <ul id="recent-cities"></ul>
+
       </div>
       </p>
     </div>

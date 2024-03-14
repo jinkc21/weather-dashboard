@@ -9,10 +9,12 @@ const dayTwoEl = document.getElementById('day-2')
 const dayThreeEl = document.getElementById('day-3')
 const dayFourEl = document.getElementById('day-4')
 const dayFiveEl = document.getElementById('day-5')
-const recentSearch = JSON.parse(localStorage.getItem('city'))
+const recentCities = document.getElementById('recent-cities')
+const recentSearch = JSON.parse(localStorage.getItem('city') || '[]')
 const latLon = JSON.parse(localStorage.getItem('coord'))
 
 const today = dayjs()
+$('#today').text(today.format('YYYY-MM-D'))
 
 function getWeather(event) {
   // event.preventDefault()
@@ -30,12 +32,15 @@ function getWeather(event) {
       localStorage.setItem("coord", JSON.stringify(data.coord))
 
       cityNameEl.innerHTML = data.name
-      $('#day-1-date').text(today.format('MMM D, YYYY'));
+      $('#day-1-date').text(today.format('YYYY-MM-D'));
       dayOneEl.children[1].src = "https://openweathermap.org/img/wn/" + data.weather[0].icon + "@2x.png"
       dayOneEl.children[2].innerHTML = "Temperature: " + data.main.temp
       dayOneEl.children[3].innerHTML = "Humidity: " + data.main.humidity
       dayOneEl.children[4].innerHTML = "Wind Speed:" + data.wind.speed
     
+      let cityList = document.createElement('li')
+      cityList.textContent = recentSearch
+      recentCities.appendChild(cityList)
     })
 }
 
