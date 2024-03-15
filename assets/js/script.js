@@ -32,15 +32,22 @@ function getWeather(event) {
       localStorage.setItem("coord", JSON.stringify(data.coord))
 
       cityNameEl.innerHTML = data.name
-      $('#day-1-date').text(today.format('YYYY-MM-D'));
+      $('#day-0-date').text(today.format('YYYY-MM-D'));
       dayOneEl.children[1].src = "https://openweathermap.org/img/wn/" + data.weather[0].icon + "@2x.png"
       dayOneEl.children[2].innerHTML = "Temperature: " + data.main.temp
       dayOneEl.children[3].innerHTML = "Humidity: " + data.main.humidity
       dayOneEl.children[4].innerHTML = "Wind Speed:" + data.wind.speed
     
-      let cityList = document.createElement('li')
+      let cityList = document.createElement('button')
       cityList.textContent = recentSearch
       recentCities.appendChild(cityList)
+
+      
+    })
+    recentCities.addEventListener("click", (event) => {
+      if(event.target.tagName === 'BUTTON') {
+        console.log(event.target.innerText)
+      }
     })
 }
 
@@ -48,7 +55,7 @@ getWeatherBtn.addEventListener('click', getWeather);
 getForecastBtn.addEventListener('click', getForecast);
 
       function getForecast(event) {
-        // event.preventDefault()
+        event.preventDefault()
         const forecastUrl = `https://api.openweathermap.org/data/2.5/forecast?lat=${latLon.lat}&lon=${latLon.lon}&appid=${APIKey}`
         fetch(forecastUrl)
              .then(function (response) {
