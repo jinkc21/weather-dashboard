@@ -12,7 +12,7 @@ const dayThreeEl = document.getElementById('day-3')
 const dayFourEl = document.getElementById('day-4')
 const dayFiveEl = document.getElementById('day-5')
 const recentCities = document.getElementById('recent-cities')
-const recentSearch = JSON.parse(localStorage.getItem('city'))
+const recentSearch = JSON.parse(localStorage.getItem('city')) || []
 const latLon = JSON.parse(localStorage.getItem('coord'))
 
 const today = dayjs()
@@ -27,11 +27,13 @@ function getWeather(event) {
       return response.json();
     })
     .then(function (data) {
+      console.log(data)
       // const lat = data.coord.lat
       // const lon = data.coord.lon
-
-      localStorage.setItem("city", JSON.stringify(data.name))
-      localStorage.setItem("coord", JSON.stringify(data.coord))
+      recentSearch.push(data.name)
+      localStorage.setItem("city", JSON.stringify(recentSearch))
+      getForecast(data.coord.lat, data.coord.lon)
+      //localStorage.setItem("coord", JSON.stringify(data.coord))
 
       cityNameEl.innerHTML = data.name
       $('#day-0-date').text(today.format('YYYY-MM-D') + "   Today's Weather");
@@ -41,31 +43,31 @@ function getWeather(event) {
       dayZeroEl.children[4].innerHTML = "Wind Speed:" + data.wind.speed + "mph"
 
       let cityList = document.createElement('button')
-      cityList.textContent = recentSearch
-      recentCities.appendChild(cityList)
-
-
-    })
-  recentCities.addEventListener("click", (event) => {
-    if (event.target.tagName === 'button') {
-      console.log(event.target.innerText)
-    }
+      cityList.textContent = data.name
+      cityList.setAttribute("value", data.name)
+      cityList.addEventListener("click", getRecent)
+        recentCities.appendChild(cityList)
   })
-  getForecast()
+      
+
+
+ 
+ 
+  //getForecast()
 }
 
 getWeatherBtn.addEventListener('click', getWeather);
 // getForecastBtn.addEventListener('click', getForecast);
 
-function getForecast() {
+function getForecast(lat, lon) {
   // event.preventDefault()
-  const forecastUrl = `https://api.openweathermap.org/data/2.5/forecast?lat=${latLon.lat}&lon=${latLon.lon}&units=imperial&appid=${APIKey}`
+  const forecastUrl = `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&units=imperial&appid=${APIKey}`
   fetch(forecastUrl)
     .then(function (response) {
       return response.json();
     })
     .then(function (data) {
-      // console.log("hello")
+      //  console.log(data)
       forecastEl.innerHTML = "5 Day Forecast"
        dayOneEl.children[0].setAttribute('maxlength', "10")
        dayOneEl.children[0].innerHTML = data.list[0].dt_txt
@@ -99,4 +101,46 @@ function getForecast() {
       dayFiveEl.children[3].innerHTML = "Humidity: " + data.list[32].main.humidity + "%"
       dayFiveEl.children[4].innerHTML = "Wind Speed:" + data.list[32].wind.speed + "mph"
     })
+}
+
+function renderHistory(){
+  for(let i = 0; i < recentSearch.length; i++){
+    let cityList = document.createElement('button')
+    cityList.textContent = recentSearch[i]
+    cityList.setAttribute("value", recentSearch[i])
+    cityList.addEventListener("click", getRecent)
+    recentCities.appendChild(cityList)
+  }
+}
+
+renderHistory()
+
+function getRecent(event) {
+  // event.preventDefault()
+  const recentCityName = event.target.value
+  console.log(recentCityName)
+  const recentUrl = `https://api.openweathermap.org/data/2.5/weather?q=${recentCityName}&units=imperial&appid=${APIKey}`
+  
+  fetch(recentUrl)
+    .then(function (response) {
+      return response.json();
+    })
+    .then(function (data) {
+      // console.log(data)
+      // const lat = data.coord.lat
+      // const lon = data.coord.lon
+      recentSearch.push(data.name)
+      localStorage.setItem("city", JSON.stringify(recentSearch))
+      getForecast(data.coord.lat, data.coord.lon)
+      //localStorage.setItem("coord", JSON.stringify(data.coord))
+
+      cityNameEl.innerHTML = data.name
+      $('#day-0-date').text(today.format('YYYY-MM-D') + "   Today's Weather");
+      dayZeroEl.children[1].src = "https://openweathermap.org/img/wn/" + data.weather[0].icon + "@2x.png"
+      dayZeroEl.children[2].innerHTML = "Temperature: " + data.main.temp + "°F"
+      dayZeroEl.children[3].innerHTML = "Humidity: " + data.main.humidity + "%"
+      dayZeroEl.children[4].innerHTML = "Wind Speed:" + data.wind.speed + "mph"
+
+  })
+
 }
