@@ -67,7 +67,9 @@ function getForecast() {
     .then(function (data) {
       // console.log("hello")
       forecastEl.innerHTML = "5 Day Forecast"
-      dayOneEl.children[0].innerHTML = data.list[0].dt_txt
+       dayOneEl.children[0].setAttribute('maxlength', "10")
+       dayOneEl.children[0].innerHTML = data.list[0].dt_txt
+     
       dayOneEl.children[1].src = "https://openweathermap.org/img/wn/" + data.list[0].weather[0].icon + "@2x.png"
       dayOneEl.children[2].innerHTML = "Temperature: " + data.list[0].main.temp + "°F"
       dayOneEl.children[3].innerHTML = "Humidity: " + data.list[0].main.humidity + "%"
