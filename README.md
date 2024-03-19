@@ -9,25 +9,24 @@ This application is used to search current and future weather conditions for a s
 
 Browser with local storage is required.
 Click the link below to view page.
-
+https://jinkc21.github.io/weather-dashboard/
 
 ## Usage
 
-Provide instructions and examples for use. Include screenshots as needed.
+The page starts with the current date as well as an input field. 
+![main](assets/images/main.png)
+To search for a city's weather forecast, a city name must be inputted in the city search box. After clicking "Get Weather", the current weather and 5 day forecast will be displayed. 
+![one-search](assets/images/search1.png)
+A search history is also created that allows users to get the specific infomation for the recently searched city. 
+![two-search](assets/images/search2.png)
 
-To add a screenshot, create an `assets/images` folder in your repository and upload your screenshot to it. Then, using the relative filepath, add it to your README using the following syntax:
-
-    ```md
-    ![alt text](assets/images/screenshot.png)
-    ```
 
 ## Credits
 
-List your collaborators, if any, with links to their GitHub profiles.
+Openweathermap API was used heavily. They provided the API as well as a tutorial to create this application. 
+https://openweathermap.org/
+https://coding-boot-camp.github.io/full-stack/apis/how-to-use-api-keys
 
-If you used any third-party assets that require attribution, list the creators with links to their primary web presence in this section.
-
-If you followed tutorials, include links to those here as well.
 
 ## License
 
